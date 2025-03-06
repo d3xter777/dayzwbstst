@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
 import { Menu, X, MessageCircle, Send } from 'lucide-react';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ServersPage from './pages/ServersPage';
 import RulesPage from './pages/RulesPage';
+import ShopPage from './pages/ShopPage';
 import banner from './img/banner.png';
 
-function App() {
+function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState('home');
+  const location = useLocation();
   
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  const navigateTo = (page: string) => {
-    setCurrentPage(page);
-    setMobileMenuOpen(false);
+  const isActive = (path: string) => {
+    return location.pathname === path;
   };
 
   return (
-    <div className="min-h-screen bg-zinc-900 text-zinc-100 flex flex-col">
+    <>
       {/* Social Links */}
       <div className="bg-zinc-950 py-2 border-b border-zinc-800">
         <div className="container mx-auto px-4 flex justify-end items-center">
@@ -52,40 +53,42 @@ function App() {
       <nav className="bg-zinc-950 py-4 sticky top-0 z-50">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center">
-            <img 
-              src={banner} 
-              alt="DreadSky Logo" 
-              className="w-8 h-8 object-cover rounded mr-2"
-            />
-            <span className="text-xl font-bold">DreadSky</span>
+            <Link to="/" className="flex items-center">
+              <img 
+                src={banner} 
+                alt="DreadSky Logo" 
+                className="w-8 h-8 object-cover rounded mr-2"
+              />
+              <span className="text-xl font-bold">DreadSky</span>
+            </Link>
           </div>
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
-            <button 
-              onClick={() => navigateTo('home')} 
-              className={`font-medium transition-colors ${currentPage === 'home' ? 'text-emerald-500' : 'text-zinc-400 hover:text-emerald-500'}`}
+            <Link 
+              to="/" 
+              className={`font-medium transition-colors ${isActive('/') ? 'text-emerald-500' : 'text-zinc-400 hover:text-emerald-500'}`}
             >
               Главная
-            </button>
-            <button 
-              onClick={() => navigateTo('shop')} 
-              className={`font-medium transition-colors ${currentPage === 'shop' ? 'text-emerald-500' : 'text-zinc-400 hover:text-emerald-500'}`}
+            </Link>
+            <Link 
+              to="/shop" 
+              className={`font-medium transition-colors ${isActive('/shop') ? 'text-emerald-500' : 'text-zinc-400 hover:text-emerald-500'}`}
             >
               Магазин
-            </button>
-            <button 
-              onClick={() => navigateTo('servers')} 
-              className={`font-medium transition-colors ${currentPage === 'servers' ? 'text-emerald-500' : 'text-zinc-400 hover:text-emerald-500'}`}
+            </Link>
+            <Link 
+              to="/servers" 
+              className={`font-medium transition-colors ${isActive('/servers') ? 'text-emerald-500' : 'text-zinc-400 hover:text-emerald-500'}`}
             >
               Сервера
-            </button>
-            <button 
-              onClick={() => navigateTo('rules')} 
-              className={`font-medium transition-colors ${currentPage === 'rules' ? 'text-emerald-500' : 'text-zinc-400 hover:text-emerald-500'}`}
+            </Link>
+            <Link 
+              to="/rules" 
+              className={`font-medium transition-colors ${isActive('/rules') ? 'text-emerald-500' : 'text-zinc-400 hover:text-emerald-500'}`}
             >
               Правила
-            </button>
+            </Link>
           </div>
           
           {/* Mobile Menu Button */}
@@ -102,30 +105,34 @@ function App() {
           <div className="md:hidden bg-zinc-900 border-t border-zinc-800 mt-4">
             <div className="container mx-auto px-4 py-2">
               <div className="flex flex-col space-y-3 py-3">
-                <button 
-                  onClick={() => navigateTo('home')} 
-                  className={`text-left py-2 font-medium ${currentPage === 'home' ? 'text-emerald-500' : 'text-zinc-400'}`}
+                <Link 
+                  to="/" 
+                  className={`text-left py-2 font-medium ${isActive('/') ? 'text-emerald-500' : 'text-zinc-400'}`}
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   Главная
-                </button>
-                <button 
-                  onClick={() => navigateTo('shop')} 
-                  className={`text-left py-2 font-medium ${currentPage === 'shop' ? 'text-emerald-500' : 'text-zinc-400'}`}
+                </Link>
+                <Link 
+                  to="/shop" 
+                  className={`text-left py-2 font-medium ${isActive('/shop') ? 'text-emerald-500' : 'text-zinc-400'}`}
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   Магазин
-                </button>
-                <button 
-                  onClick={() => navigateTo('servers')} 
-                  className={`text-left py-2 font-medium ${currentPage === 'servers' ? 'text-emerald-500' : 'text-zinc-400'}`}
+                </Link>
+                <Link 
+                  to="/servers" 
+                  className={`text-left py-2 font-medium ${isActive('/servers') ? 'text-emerald-500' : 'text-zinc-400'}`}
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   Сервера
-                </button>
-                <button 
-                  onClick={() => navigateTo('rules')} 
-                  className={`text-left py-2 font-medium ${currentPage === 'rules' ? 'text-emerald-500' : 'text-zinc-400'}`}
+                </Link>
+                <Link 
+                  to="/rules" 
+                  className={`text-left py-2 font-medium ${isActive('/rules') ? 'text-emerald-500' : 'text-zinc-400'}`}
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   Правила
-                </button>
+                </Link>
               </div>
               
               {/* Social Links in Mobile Menu */}
@@ -153,25 +160,32 @@ function App() {
           </div>
         )}
       </nav>
+    </>
+  );
+}
 
-      {/* Page Content */}
-      {currentPage === 'home' && <HomePage />}
-      {currentPage === 'servers' && <ServersPage />}
-      {currentPage === 'rules' && <RulesPage />}
-      {currentPage === 'shop' && (
-        <div className="container mx-auto px-4 py-16 text-center">
-          <h1 className="text-4xl font-bold mb-4">Магазин</h1>
-          <p className="text-zinc-300">Страница магазина находится в разработке.</p>
-        </div>
-      )}
+function App() {
+  return (
+    <Router>
+      <div className="min-h-screen bg-zinc-900 text-zinc-100 flex flex-col">
+        <Navigation />
+        
+        {/* Page Content */}
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/servers" element={<ServersPage />} />
+          <Route path="/rules" element={<RulesPage />} />
+          <Route path="/shop" element={<ShopPage />} />
+        </Routes>
 
-      {/* Footer */}
-      <footer className="bg-zinc-950 py-6 text-center text-zinc-500 mt-auto">
-        <div className="container mx-auto px-4">
-          <p>© 2025 DreadSky - DayZ Server. Все права защищены.</p>
-        </div>
-      </footer>
-    </div>
+        {/* Footer */}
+        <footer className="bg-zinc-950 py-6 text-center text-zinc-500 mt-auto">
+          <div className="container mx-auto px-4">
+            <p>© 2025 DreadSky - DayZ Server. Все права защищены.</p>
+          </div>
+        </footer>
+      </div>
+    </Router>
   );
 }
 
